@@ -67,4 +67,15 @@ typedef struct {
 
 } S_BOARD;
 
+/* MACROS */
+
+
+
+/* GLOBALS */
+
+
+/* FUNCTIONS */
+
+// init.c
+
 #endif // !DEFS_H
