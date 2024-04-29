@@ -2,6 +2,8 @@
 #include "stdlib.h"
 #include "defs.h"
 
+
+
 int main() {
 
 	AllInit();

@@ -1,6 +1,7 @@
 //init.c
 
 #include "defs.h"
+#include "stdio.h"
 #include "stdlib.h"
 
 // 0000 000000000000000 000000000000000 000000000000000 111111111111111
