@@ -15,7 +15,12 @@ int main() {
 	PrintBitBoard(playBitBoard);
 
 	int count = CNT(playBitBoard);
-
+	printf("count:%d\n",count);
+	printf("\n");
+	int index = POP(&playBitBoard);
+	printf("index:%d\n",index);
+	PrintBitBoard(playBitBoard);
+	count = CNT(playBitBoard);
 	printf("count:%d\n",count);
 
 	return 0;
