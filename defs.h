@@ -1,10 +1,9 @@
 #ifndef DEFS_H
 #define DEFS_H
 
-#include "stdlib.h"
-
+/********************************************/
+//comment/uncomment the line below to disable/enable debug mode
 // #define DEBUG
-
 #ifndef DEBUG
 #define ASSERT(n) 
 #else
@@ -17,10 +16,12 @@
 		printf("At Line %d\n", __LINE__); \
 		exit(1); }
 #endif
+/********************************************/
 
+#include "stdlib.h"
 typedef unsigned long long U64;
 
-#define NAME "Vice 1.0"
+#define NAME "Chess-Engine 1.0"
 #define BRD_SQ_NUM 120
 
 #define MAXGAMEMOVES 2048
@@ -49,19 +50,19 @@ enum { FALSE, TRUE };
 enum { WKCA = 1, WQCA = 2, BKCA = 4, BQCA = 8 };
 
 typedef struct {
+
 	int move;
-	int score;
+	int castlePerm;
 	int enPas;
 	int fiftyMove;
 	U64 posKey;
-
 
 } S_UNDO;
 
 typedef struct {
 
 	int pieces[BRD_SQ_NUM];
-	U64 pawns[3]; // 
+	U64 pawns[3];
 
 	int KingSq[2];
 
@@ -94,6 +95,7 @@ typedef struct {
 /* MACROS */
 
 #define FR2SQ(f,r) ( (21 + (f) ) + ( (r) * 10 ) )
+#define SQ64(sq120) Sq120ToSq64[sq120]
 
 
 /* GLOBALS */
@@ -104,8 +106,11 @@ extern int Sq64ToSq120[64];
 
 /* FUNCTIONS */
 
+// init.c
 extern void AllInit();
 
-// init.c
+// bitboards.c
+extern void PrintBitBoard(U64 bb);
+
 
 #endif // !DEFS_H
