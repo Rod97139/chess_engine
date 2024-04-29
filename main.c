@@ -1,32 +1,33 @@
 #include "stdio.h"
+#include "stdlib.h"
 #include "defs.h"
 
 int main() {
 
 	AllInit();
 
-	U64 playBitBoard = 0ULL;
-	int index = 0;
+	int PieceOne = rand();
+	int PieceTwo = rand();
+	int PieceThree = rand();
+	int PieceFour = rand();
+
+	printf("PieceOne:%X\n", PieceOne);
+	printf("PieceTwo:%X\n", PieceTwo);
+	printf("PieceThree:%X\n", PieceThree);
+	printf("PieceFour:%X\n", PieceFour);
+
+	int key = PieceOne ^ PieceTwo ^ PieceFour;
+	int tempKey = PieceOne;
+	tempKey ^= PieceThree;
+	tempKey ^= PieceFour;
+	tempKey ^= PieceTwo;
+	printf("Key:%X\n", key);
+	printf("TempKey:%X\n", tempKey);
+
+	tempKey ^= PieceThree;
+	printf("(three out)TempKey:%X\n", tempKey);
+	tempKey ^= PieceThree;
+	printf("(three in again)TempKey:%X\n", tempKey);
 	
-	// for(index = 0; index < 64; index++) {
-	// 	printf("Index:%d\n",index);
-	// 	PrintBitBoard(SetMask[index]);
-	// 	printf("\n");
-	// }
-
-	// for(index = 0; index < 64; index++) {
-	// 	printf("Index:%d\n",index);
-	// 	PrintBitBoard(ClearMask[index]);
-	// 	printf("\n");
-	// }
-
-	SETBIT(playBitBoard, 61);
-	PrintBitBoard(playBitBoard);
-	printf("\n");
-
-	CLRBIT(playBitBoard, 61);
-	PrintBitBoard(playBitBoard);
-	printf("\n");
-
 	return 0;
 } 
