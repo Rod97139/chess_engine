@@ -1,2 +1,2 @@
 all:
-	gcc main.c init.c -o main
+	gcc main.c init.c -o engine
