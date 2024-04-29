@@ -1,6 +1,7 @@
 // board.c
 
 #include "stdio.h"
+#include "stdlib.h"
 #include "defs.h"
 
 int ParseFen(char *fen, S_BOARD *pos) {

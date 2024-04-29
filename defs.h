@@ -17,8 +17,8 @@
 		exit(1); }
 #endif
 /********************************************/
-
 #include "stdlib.h"
+
 typedef unsigned long long U64;
 
 #define NAME "Chess-Engine 1.0"
