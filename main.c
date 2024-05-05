@@ -11,12 +11,33 @@ int main() {
 
 	S_BOARD board[1];
 	S_MOVELIST list[1];
-	ParseFen(CASTLE2, board);
+	ParseFen(START_FEN, board);
 	// PrintBoard(board);
 
 	GenerateAllMoves(board, list);
 
-	PrintMoveList(list);
+	int move = 0;
+	int MoveNum = 0;
+
+	PrintBoard(board);
+	getchar();
+	
+	for(MoveNum = 0; MoveNum < list->count; ++MoveNum) {
+		move = list->moves[MoveNum].move;
+
+		if(!MakeMove(board, move)) {
+			continue;
+		}
+
+		printf("Move:%d > %s\n",MoveNum+1,PrMove(move));
+		PrintBoard(board);
+
+		TakeMove(board);
+		printf("\nTAKEN: %s\n", PrMove(move));
+		PrintBoard(board);
+
+		getchar();
+	}
 
 
 
