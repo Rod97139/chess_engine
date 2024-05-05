@@ -1,14 +1,13 @@
 // makemove.c
 
+#include "stdio.h"
 #include "defs.h"
 #define HASH_PCE(pce, sq) (pos->posKey ^= (PieceKeys[(pce)][(sq)]))
 #define HASH_CA (pos->posKey ^= (CastleKeys[(pos->castlePerm)]))
 #define HASH_SIDE (pos->posKey ^= (SideKey))
 #define HASH_EP (pos->posKey ^= (PieceKeys[EMPTY][(pos->enPas)])
 
-// ca_perm &= CastlePerm[from]
 // ca_perm &= 3 -> 0011
-
 // 1111 == 15
 
 const int CastlePerm[120] = {
@@ -51,16 +50,6 @@ static void ClearPiece(const int sq, S_BOARD *pos) {
         CLRBIT(pos->pawns[col], SQ64(sq));
         CLRBIT(pos->pawns[BOTH], SQ64(sq));
     }
-    /*
-        pos->pceNum[wP] == 5 Looping from 0 to 4
-        pos->pList[pce][0] = sq0
-        pos->pList[pce][1] = sq1
-        pos->pList[pce][2] = sq2
-        pos->pList[pce][3] = sq3
-        pos->pList[pce][4] = sq4
-
-        sq == sq3 so t_pceNum = 3
-    */
 
     for (index = 0; index < pos->pceNum[pce]; ++index) {
         if (pos->pList[pce][index] == sq) {
@@ -72,16 +61,69 @@ static void ClearPiece(const int sq, S_BOARD *pos) {
     ASSERT(t_pceNum != -1);
 
     pos->pceNum[pce]--;
-    // pos->pceNum[wP] == 4
+  
     pos->pList[pce][t_pceNum] = pos->pList[pce][pos->pceNum[pce]];
-    // pos->pList[wP][3] = pos->pList[wP][4] = sq4
+}
 
-    /*
-        pos->pceNum[wP] == 5 Looping from 0 to 4
-        pos->pList[pce][0] = sq0
-        pos->pList[pce][1] = sq1
-        pos->pList[pce][2] = sq2
-        pos->pList[pce][3] = sq4
-    */
+static void AddPiece(const int sq, S_BOARD *pos, const int pce) {
+    ASSERT(PieceValid(pce));
+    ASSERT(SqOnBoard(sq));
 
+    int col = PieceCol[pce];
+
+    HASH_PCE(pce, sq);
+
+    pos->pieces[sq] = pce;
+
+    if (PieceBig[pce]) {
+        pos->bigPce[col]++;
+        if (PieceMaj[pce]) {
+            pos->majPce[col]++;
+        } else {
+            pos->minPce[col]++;
+        }
+    } else {
+        SETBIT(pos->pawns[col], SQ64(sq));
+        SETBIT(pos->pawns[BOTH], SQ64(sq));
+    }
+
+    pos->material[col] += PieceVal[pce];
+    pos->pList[pce][pos->pceNum[pce]++] = sq;
+}
+
+static void MovePiece(const int from, const int to, S_BOARD *pos) {
+    ASSERT(SqOnBoard(from));
+    ASSERT(SqOnBoard(to));
+
+    int index = 0;
+    int pce = pos->pieces[from];
+    int col = PieceCol[pce];
+
+#ifdef DEBUG
+    int t_PieceNum = FALSE;
+#endif
+
+    HASH_PCE(pce, from);
+    pos->pieces[from] = EMPTY;
+
+    HASH_PCE(pce, to);
+    pos->pieces[to] = pce;
+
+    if (!PieceBig[pce]) {
+        CLRBIT(pos->pawns[col], SQ64(from));
+        CLRBIT(pos->pawns[BOTH], SQ64(from));
+        SETBIT(pos->pawns[col], SQ64(to));
+        SETBIT(pos->pawns[BOTH], SQ64(to));
+    }
+
+    for (index = 0; index < pos->pceNum[pce]; ++index) {
+        if (pos->pList[pce][index] == from) {
+            pos->pList[pce][index] = to;
+#ifdef DEBUG
+    t_PieceNum = TRUE;
+#endif
+            break;
+        }
+    }
+    ASSERT(t_PieceNum);
 }
