@@ -7,6 +7,7 @@
 #define HASH_EP (pos->posKey ^= (PieceKeys[EMPTY][(pos->enPas)])
 
 // ca_perm &= CastlePerm[from]
+// ca_perm &= 3 -> 0011
 
 // 1111 == 15
 
@@ -24,3 +25,63 @@ const int CastlePerm[120] = {
     15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
     15, 15, 15, 15, 15, 15, 15, 15, 15, 15
 };
+
+static void ClearPiece(const int sq, S_BOARD *pos) {
+    ASSERT(SqOnBoard(sq));
+    int pce = pos->pieces[sq];
+    ASSERT(PieceValid(pce));
+
+    int col = PieceCol[pce];
+    int index = 0;
+    int t_pceNum = -1;
+
+    HASH_PCE(pce, sq);
+
+    pos->pieces[sq] = EMPTY;
+    pos->material[col] -= PieceVal[pce];
+
+    if (PieceBig[pce]) {
+        pos->bigPce[col]--;
+        if (PieceMaj[pce]) {
+            pos->majPce[col]--;
+        } else {
+            pos->minPce[col]--;
+        }
+    } else {
+        CLRBIT(pos->pawns[col], SQ64(sq));
+        CLRBIT(pos->pawns[BOTH], SQ64(sq));
+    }
+    /*
+        pos->pceNum[wP] == 5 Looping from 0 to 4
+        pos->pList[pce][0] = sq0
+        pos->pList[pce][1] = sq1
+        pos->pList[pce][2] = sq2
+        pos->pList[pce][3] = sq3
+        pos->pList[pce][4] = sq4
+
+        sq == sq3 so t_pceNum = 3
+    */
+
+    for (index = 0; index < pos->pceNum[pce]; ++index) {
+        if (pos->pList[pce][index] == sq) {
+            t_pceNum = index;
+            break;
+        }
+    }
+
+    ASSERT(t_pceNum != -1);
+
+    pos->pceNum[pce]--;
+    // pos->pceNum[wP] == 4
+    pos->pList[pce][t_pceNum] = pos->pList[pce][pos->pceNum[pce]];
+    // pos->pList[wP][3] = pos->pList[wP][4] = sq4
+
+    /*
+        pos->pceNum[wP] == 5 Looping from 0 to 4
+        pos->pList[pce][0] = sq0
+        pos->pList[pce][1] = sq1
+        pos->pList[pce][2] = sq2
+        pos->pList[pce][3] = sq4
+    */
+
+}
