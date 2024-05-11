@@ -68,6 +68,20 @@ typedef struct {
 
 typedef struct {
 
+	U64 posKey;
+	int move;
+
+} S_PVENTRY;
+
+typedef struct {
+
+	S_PVENTRY *pTable;
+	int numEntries;
+
+} S_PVTABLE;
+
+typedef struct {
+
 	int move;
 	int castlePerm;
 	int enPas;
@@ -107,6 +121,8 @@ typedef struct {
 
 	// pList[wN][0] = E1;
 	// pList[wN][1] = D4;.. .. ..
+
+	S_PVTABLE PvTable[1];
 
 } S_BOARD;
 
@@ -232,5 +248,11 @@ extern void PerftTest(int depth, S_BOARD *pos);
 
 // search.c
 extern void SearchPosition(S_BOARD *pos);
+
+// misc.c
+extern int GetTimeMs();
+
+// pvtable.c
+extern void InitPvTable(S_PVTABLE *table);
 
 #endif // !DEFS_H
