@@ -23,3 +23,27 @@ void InitPvTable(S_PVTABLE *table) {
     ClearPvTable(table);
     printf("PvTable init complete with %d entries\n", table->numEntries);
 }
+
+void StorePvMove(const S_BOARD *pos, const int move) {
+
+    int index = pos->posKey % pos->PvTable->numEntries;
+    ASSERT(index >= 0 && index <= pos->PvTable->numEntries - 1);
+    
+    pos->PvTable->pTable[index].move = move;
+    pos->PvTable->pTable[index].posKey = pos->posKey;
+}
+
+int ProbePvTable(const S_BOARD *pos) {
+
+    int index = pos->posKey % pos->PvTable->numEntries;
+    ASSERT(index >= 0 && index <= pos->PvTable->numEntries - 1);
+
+    if(pos->PvTable->pTable[index].posKey == pos->posKey) {
+        // pos->PvMove = pos->PvTable->pTable[index].move;
+        // return;
+        return pos->PvTable->pTable[index].move;
+    }
+
+    // pos->PvMove = NOMOVE;
+    return NOMOVE;
+}

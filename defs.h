@@ -254,5 +254,8 @@ extern int GetTimeMs();
 
 // pvtable.c
 extern void InitPvTable(S_PVTABLE *table);
+extern void StorePvMove(const S_BOARD *pos, const int move);
+extern int ProbePvTable(const S_BOARD *pos);
+
 
 #endif // !DEFS_H
