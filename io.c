@@ -53,8 +53,6 @@ int ParseMove(char *ptrChar, S_BOARD *pos) {
     int from = FR2SQ(ptrChar[0]-'a',ptrChar[1]-'1');
     int to = FR2SQ(ptrChar[2]-'a',ptrChar[3]-'1');
 
-    printf("ptrChar: %s From:%d To:%d\n",ptrChar, from,to);
-
     ASSERT(SqOnBoard(from) && SqOnBoard(to));
 
     S_MOVELIST list[1];

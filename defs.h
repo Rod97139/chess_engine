@@ -230,4 +230,7 @@ extern void TakeMove(S_BOARD *pos);
 // perft.c
 extern void PerftTest(int depth, S_BOARD *pos);
 
+// search.c
+extern void SearchPosition(S_BOARD *pos);
+
 #endif // !DEFS_H
