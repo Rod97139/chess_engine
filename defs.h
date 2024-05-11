@@ -134,6 +134,8 @@ typedef struct {
 #define MFLAGCAP 0x7C000
 #define MFLAGPROM 0xF00000
 
+#define NOMOVE 0
+
 
 
 /* MACROS */
@@ -209,6 +211,7 @@ extern int SqAttacked(const int sq, const int side, const S_BOARD *pos);
 extern char *PrSq(const int sq);
 extern char *PrMove(const int move);
 extern void PrintMoveList(const S_MOVELIST *list);
+extern int ParseMove(char *ptrChar, S_BOARD *pos);
 
 // validate.c
 extern int SqOnBoard(const int sq);
