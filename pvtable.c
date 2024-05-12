@@ -3,6 +3,30 @@
 #include "stdio.h"
 #include "defs.h"
 
+int GetPvLine(const int depth, S_BOARD *pos) {
+
+    ASSERT(depth < MAXDEPTH && depth >= 1);
+
+    int move = ProbePvTable(pos);
+    int count = 0;
+
+    while(move != NOMOVE && count < depth) {
+
+        if(MoveExists(pos, move)) {
+            MakeMove(pos, move);
+            pos->PvArray[count++] = move;
+        } else {
+            break;
+        }
+        move = ProbePvTable(pos);
+    }
+
+    while(pos->ply > 0) {
+        TakeMove(pos);
+    }
+    return count;
+}
+
 const int PvSize = 0x100000 * 2;
 
 void ClearPvTable(S_PVTABLE *table) {
