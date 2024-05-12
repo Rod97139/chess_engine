@@ -126,7 +126,30 @@ typedef struct {
 	S_PVTABLE PvTable[1];
 	int PvArray[MAXDEPTH];
 
+	int searchHistory[13][BRD_SQ_NUM];
+	int searchKillers[2][MAXDEPTH];
+
 } S_BOARD;
+
+typedef struct {
+
+	int starttime;
+	int stoptime;
+	int depth;
+	int depthset;
+	int timeset;
+	int movestogo;
+	int infinite;
+
+	long nodes;
+
+	int quit;
+	int stopped;
+
+	// float fh;
+	// float fhf;
+
+} S_SEARCHINFO;
 
 /* GAME MOVE */
 // 0000 0000 0000 0000 0001 1111 -> 1F
