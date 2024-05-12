@@ -4,6 +4,7 @@
 
 // #define PERFTFEN "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1"
 #define PERFTFEN "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N w - - 0 1"
+#define WAC1 "2rr3k/pp3pp1/1nnqbN1p/3pN3/2pP4/2P3Q1/PPB4P/R4RK1 w - -"
 
 int main() {
 
@@ -11,7 +12,8 @@ int main() {
 
 	S_BOARD board[1];
 	S_MOVELIST list[1];
-	ParseFen(START_FEN, board);
+	S_SEARCHINFO info[1];
+	ParseFen(WAC1, board);
 	// PrintBoard(board);
 	// PerftTest(3, board);
 
@@ -30,15 +32,9 @@ int main() {
 			break;
 		} else if (input[0] == 't') {
 			TakeMove(board);
-		} else if (input[0] == 'p') {
-			// PerftTest(4, board);
-			Max = GetPvLine(4, board);
-			printf("PvLine of %d Moves: \n", Max);
-			for(PvNum = 0; PvNum < Max; ++PvNum) {
-				move = board->PvArray[PvNum];
-				printf(" %s", PrMove(move));
-			}	
-			printf("\n");
+		} else if (input[0] == 's') {
+			info->depth = 4;
+			SearchPosition(board, info);
 		} else {
 			move = ParseMove(input, board);
 			if (move != NOMOVE) {

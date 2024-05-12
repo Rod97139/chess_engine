@@ -146,8 +146,8 @@ typedef struct {
 	int quit;
 	int stopped;
 
-	// float fh;
-	// float fhf;
+	float fh;
+	float fhf;
 
 } S_SEARCHINFO;
 
@@ -283,6 +283,7 @@ extern void InitPvTable(S_PVTABLE *table);
 extern void StorePvMove(const S_BOARD *pos, const int move);
 extern int ProbePvTable(const S_BOARD *pos);
 extern int GetPvLine(const int depth, S_BOARD *pos);
+extern void ClearPvTable(S_PVTABLE *table);
 
 // evaluate.c
 extern int EvalPosition(const S_BOARD *pos);
